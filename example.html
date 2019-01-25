@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Expaaand</title>
+  <style type="text/css">
+  body {
+  height: 100vh;
+  padding: 1rem;
+  background-image: linear-gradient(to left, #1c46f2, #5f5fe8);
+  background-size: 400% 400%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  animation: backgroundAni 5s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+hr {
+  border: 1px solid #1c46f2;
+}
+.main {
+  background-color: #fff;
+  padding: 3rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.4);
+  width: calc(100vw - 60px);
+  max-width: 800px;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  color: #fff;
+  background-color: #1c46f2;
+  border: 2px solid #1c46f2;
+  border-radius: 8rem;
+}
+
+.accordion__heading {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  color: #fff;
+  background-color: #1c46f2;
+  border: 2px solid #1c46f2;
+}
+
+.target {
+  display: none;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: #f2f2f2;
+}
+
+.target.is-active {
+  display: flex;
+}
+@keyframes backgroundAni {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+  </style>
+</head>
+<body>
+<div class="main">
+  <h1>Expaaand</h1>
+  <h2>Simple Example</h2>
+  <button class="button" type="button" data-expaaand="#target" data-expaaand-close=".button--close" data-expaaand-toggle="true">Toggle Expaaand 1</button>
+
+  <div class="target" id="target">
+    <p>Target element 1 </p>
+    <button class="button button--close" type="button">Hide Expaaand</button>
+  </div>
+
+<hr />
+
+<h2>Show only (no toggle)</h2>
+
+  <button class="button" type="button" data-expaaand="#target2" data-expaaand-close="#button-close-2" >Show Expaaand Only</button>
+
+  <div class="target" id="target2">
+    <p>Target element 2</p>
+    <button class="button button--close" type="button" id="button-close-2">Hide Expaaand</button>
+  </div>
+
+
+
+<hr />
+
+<h2>Custom group</h2>
+
+  <button class="button" type="button" data-expaaand="#target3" data-expaaand-close="#button-close-3" data-expaaand-group="foobar" data-expaaand-toggle="true">Expaaand Custom Group</button>
+
+  <div class="target" id="target3">
+    <p>Target element 3 custom group</p>
+    <button class="button button--close" type="button" id="button-close-3">Hide Expaaand</button>
+  </div>
+
+
+<hr />
+  <h2>Accordion</h2>
+  <div class="accordion">
+    <button class="accordion__heading" type="button" data-expaaand="#accordion1" data-expaaand-group="accordion" data-expaaand-toggle="true">Accordion 1</button>
+    <div class="target accordion__content" id="accordion1">
+      <p>Accordion group</p>
+    </div>
+
+    <button class="accordion__heading" type="button" data-expaaand="#accordion2" data-expaaand-group="accordion" data-expaaand-toggle="true">Accordion 2</button>
+    <div class="target accordion__content" id="accordion2">
+      <p>Accordion group</p>
+    </div>
+
+    <button class="accordion__heading" type="button" data-expaaand="#accordion3" data-expaaand-group="accordion" data-expaaand-toggle="true">Accordion 3</button>
+    <div class="target accordion__content" id="accordion3">
+      <p>Accordion group</p>
+    </div>
+  </div>
+
+
+</div>
+
+<script>R=function(e,n,v1){function t(e,o,u,a){if(e.g)return o(e.e,e);var c=e.g=e.l,f=new XMLHttpRequest;f.onload=function(i,l){function s(){l--||o(n,e)}200==f.status||e.t?(i=[],(e.t=e.t||f.response).replace(/(?:^|[^\w\$_.])require\s*\(\s*["']([^"']*)["']\s*\)/g,function(e,n){i.push(n)}),l=i.length,i.map(function(o){t(r(e.l,o),s,"."!=o[0]?c+"/../":n,o)}),s()):u?t(e.n=r(u+="../",a),o,u,a):(e.e=f,o(f,e))},e.t?f.onload():(f.open("GET",c,!0),f.send())}function r(e,n,t){if(e.e)throw e.e;return n?(f.href=e,i.href="."!=n[0]?"./node_modules/"+n:n,t=i.href+".js",f.href="",u[t]=u[t]||{l:t}):e.n?r(e.n):(e[c]||(e.f||a("(function(require,"+c+",module){"+e.t+"\n})//# sourceURL="+e.l))(function(n){return r(r(e.l,n))},e[c]={},e),e[c])}function o(e,n){t(e.call?{l:"",t:""+e,f:e}:r("",e),function(t,o){try{e=r(o)}catch(u){t=u}n&&n(t,e)})}var u={},a=eval,c="createElement",f=e[c]("base"),i=e[c]("a");return e.head.appendChild(f),c=e.querySelector("script[data-main]"),c&&o(c.dataset.main),c="exports",o}(document);</script>
+<script>
+R("./lib/expaaand", function (err, index) {
+    if (err) {
+        console.error(err.statusText);
+        return;
+    }
+      const buttons = Array.from(document.querySelectorAll('[data-expaaand]'));
+      const test = buttons.map( button => new index.Expaaand(button));
+
+});
+</script>
+
+</body>
+</html>
