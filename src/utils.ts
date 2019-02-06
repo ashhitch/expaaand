@@ -18,3 +18,16 @@ export const hasClass = (elm: HTMLElement, className: string): boolean => {
   // Older Browsers
   return new RegExp('(^| )' + className + '( |$)', 'gi').test(elm.className);
 };
+
+export const debounced = (fn: Function, delay: number = 150) => {
+  let timerId: any;
+  return function(...args: any[]) {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+      fn(...args);
+      timerId = null;
+    }, delay);
+  };
+};
