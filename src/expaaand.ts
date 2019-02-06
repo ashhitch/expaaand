@@ -46,7 +46,7 @@ export class Expaaand {
     breakpoints: [
       {
         xl: {
-          active: false,
+          active: true,
           size: 1200,
         },
       },
@@ -263,7 +263,6 @@ export class Expaaand {
    * @memberOf Expaaand
    */
   public resize(): void {
-    console.log(this.checkResponsive());
     if (!this.checkResponsive() && this.isActive) {
       this.hide();
     }
