@@ -1,5 +1,4 @@
-import { hasClass } from './utils';
-
+import { hasClass, debounced } from './utils';
 export interface IBreakPoint {
   [key: string]: {
     active: boolean;
@@ -39,6 +38,7 @@ export class Expaaand {
   public group: string;
   public bodyClass: string;
   public enableToggle: boolean;
+  private activeBreakpoint: IBreakPoint;
 
   private defaults: IOptionsDefaults = {
     activeClass: 'is-active',
@@ -46,7 +46,7 @@ export class Expaaand {
     breakpoints: [
       {
         xl: {
-          active: true,
+          active: false,
           size: 1200,
         },
       },
@@ -64,7 +64,7 @@ export class Expaaand {
       },
       {
         sm: {
-          active: false,
+          active: true,
           size: 480,
         },
       },
@@ -87,7 +87,7 @@ export class Expaaand {
     // Trigger element
     this.triggerElm = elm;
 
-    // Target element
+    // Target element`
     this.targetElm = this.getOption('data-expaaand', this.options.targetElm);
 
     // Status
@@ -106,8 +106,22 @@ export class Expaaand {
 
     this.closeElm = this.getOption('data-expaaand-close', this.options.closeElm);
 
+    this.activeBreakpoint = this.options.breakpoints[0];
+
     this.init();
   }
+
+  public get breakpoint(): IBreakPoint {
+    return this.activeBreakpoint;
+  }
+
+  public set breakpoint(breakpoint: IBreakPoint) {
+    if (breakpoint && this.breakpoint !== breakpoint) {
+      this.activeBreakpoint = breakpoint;
+    }
+  }
+
+  public debouncedOnResize = debounced(() => this.resize(), 150);
 
   /**
    * Initialise plugin
@@ -117,6 +131,7 @@ export class Expaaand {
    */
   public init() {
     if (this.targetElm) {
+      this.checkResponsive();
       this.events();
       this.isInitialised = true;
     } else {
@@ -138,7 +153,6 @@ export class Expaaand {
 
     this.fireEvent('expaaand:start');
 
-    console.log(this.isActive, this.enableToggle);
     // Show or toggle
     if (!this.isActive) {
       this.show();
@@ -152,27 +166,31 @@ export class Expaaand {
   /**
    * Check if any should be open on start
    *
+   * @returns {boolean}
    *
    * @memberOf Expaaand
    */
-  public checkActive() {
+  public checkActive(): boolean {
     if (hasClass(this.triggerElm, this.options.activeClass) && this.checkResponsive()) {
       this.show();
+      return true;
     }
+    return false;
   }
 
-  public checkResponsive() {
-    //let active = Object.keys(this.options.breakpoints[0])[0];
-
+  public checkResponsive(): boolean {
     const windowWidth = window.innerWidth;
-    //console.log(Object.keys(this.options.breakpoints[0])[0]);
+    const active = this.options.breakpoints.find(
+      breakpoint => windowWidth >= breakpoint[Object.keys(breakpoint)[0]].size,
+    ) as IBreakPoint;
 
-    const current = this.options.breakpoints.find(
-      breakpoint => windowWidth >= breakpoint[Object.keys(breakpoint)[0]].size
-    );
+    if (active) {
+      this.breakpoint = active;
+    }
 
-    console.log(current as IBreakPoint);
-    return (current as IBreakPoint).active;
+    const key = Object.keys(this.breakpoint as IBreakPoint)[0];
+
+    return this.breakpoint[key].active;
   }
 
   /**
@@ -245,6 +263,7 @@ export class Expaaand {
    * @memberOf Expaaand
    */
   public resize(): void {
+    console.log(this.checkResponsive());
     if (!this.checkResponsive() && this.isActive) {
       this.hide();
     }
@@ -326,7 +345,7 @@ export class Expaaand {
     this.triggerElm.addEventListener('click', evt => this.expand(evt));
 
     // Check id to hide on resize
-    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('resize', e => this.debouncedOnResize(e));
 
     // Listen for other expanders opening
     document.body.addEventListener('expaaand:start', evt => this.broadcast(evt as CustomEvent));
