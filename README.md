@@ -48,7 +48,7 @@ More docs coming soon...
 
 ## Examples
 
-See [examples.html](examples.html) for more examples (note the example is using R for module loading)
+See [example.html](example.html) for more examples (note the example is using R for module loading)
 
 ## TODO
 
