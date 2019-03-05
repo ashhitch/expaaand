@@ -355,3 +355,5 @@ export class Expaaand {
     }
   }
 }
+
+export default Expaaand;
